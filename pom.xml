@@ -1,0 +1,57 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>dk.pubhub.service</groupId>
+	<artifactId>pubhubWSClient</artifactId>
+	<version>0.1</version>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.jvnet.jax-ws-commons</groupId>
+        <artifactId>jaxws-maven-plugin</artifactId>
+        <version>2.3</version>
+        <executions>
+          <execution>
+            <id>wsimport-from-jdk</id>
+            <goals>
+              <goal>wsimport</goal>
+            </goals>
+            <configuration>
+              <executable>${tool.wsimport}</executable>
+              <wsdlUrls>
+                <wsdlUrl>http://service.pubhub.dk/Retailer/V17/MediaService.asmx?WSDL</wsdlUrl>
+              </wsdlUrls>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+  <!-- setup corresponding executables on win/*nix -->
+  <profiles>
+    <profile>
+      <id>win</id>
+      <activation>
+        <os>
+          <family>windows</family>
+        </os>
+      </activation>
+      <properties>
+        <tool.wsgen>${java.home}/../bin/wsgen.exe</tool.wsgen>
+        <tool.wsimport>${java.home}/../bin/wsimport.exe</tool.wsimport>
+      </properties>
+    </profile>
+    <profile>
+      <id>nix</id>
+      <activation>
+        <os>
+          <family>!windows</family>
+        </os>
+      </activation>
+      <properties>
+        <tool.wsgen>${java.home}/../bin/wsgen</tool.wsgen>
+        <tool.wsimport>${java.home}/../bin/wsimport</tool.wsimport>
+      </properties>
+    </profile>
+  </profiles>
+</project>
